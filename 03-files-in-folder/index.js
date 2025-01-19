@@ -13,8 +13,13 @@ fs.readdir(secretFolder, (err, files) => {
         fs.stat(filePath, (err, stats) => {
             if (err) {
                 return console.error('Ошибка при получении информации о файле:', err);
-            }   
-            console.log(`${file} - ${stats.size} bytes`);
+            } 
+            if(stats.isFile()) {
+                const ext = path.extname(file).slice(1);
+                const name = path.basename(file, ext ? `.${ext}` : '');
+                const sizeInKb = (stats.size / 1024);
+                console.log(`${name} - ${ext} - ${sizeInKb} bytes`);
+            }                      
         });
     });
 });
